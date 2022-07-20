@@ -29,4 +29,4 @@ module.exports = {
   pinterest
 }
 
-//© 2021 TURBO 
+//© 2022 PANDA-BOT
