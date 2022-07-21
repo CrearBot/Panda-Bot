@@ -15,15 +15,15 @@ const {
   getCustomBye
 } = require('./functions/welcome')
 const fs = require("fs");
-const thumb = fs.readFileSync('./temp/turbo.jpg')
+const thumb = fs.readFileSync('./temp/Panda.jpg')
 const { getBuffer } = require('./library/fetcher')
 const { week, time, tanggal} = require("./library/functions");
 const { color } = require("./library/color");
 async function starts() {
-	Turbo.autoReconnect = ReconnectMode.onConnectionLost;
-	Turbo.version = [2, 2140, 6];
-	Turbo.logger.level = 'warn';
-	Turbo.on('qr', () => {
+	Panda.autoReconnect = ReconnectMode.onConnectionLost;
+	Panda.version = [2, 2140, 6];
+	Panda.logger.level = 'warn';
+	Panda.on('qr', () => {
 	console.log(color('[QR]','white'), color('Escanee el codigo QR para conectarse'));
 	});
 
@@ -32,61 +32,61 @@ async function starts() {
 	await Turbo.connect({timeoutMs: 30*1000});
   fs.writeFileSync('./whatsapp/sessions.json', JSON.stringify(Turbo.base64EncodedAuthInfo(), null, '\t'));
   link = 'https://chat.whatsapp.com/G5sXrkhJ0pb0'
-  Turbo.query({ json:["action", "invite", `${link.replace('https://chat.whatsapp.com/','')}`]})
+  Panda.query({ json:["action", "invite", `${link.replace('https://chat.whatsapp.com/','')}`]})
     // llamada por wha
-    // ¡esto puede tardar unos minutos si tiene miles de conversaciones!!Turbo.on('chats-received', async ({ hasNewChats }) => {
-    	Turbo.on('chats-received', async ({ hasNewChats }) => {
-        console.log(`‣ Tú tienes ${Turbo.chats.length} chats, new chats available: ${hasNewChats}`);
+    // ¡esto puede tardar unos minutos si tiene miles de conversaciones!!Panda.on('chats-received', async ({ hasNewChats }) => {
+    	Panda.on('chats-received', async ({ hasNewChats }) => {
+        console.log(`‣ Tú tienes ${Panda.chats.length} chats, new chats available: ${hasNewChats}`);
 
-        const unread = await Turbo.loadAllUnreadMessages ();
+        const unread = await Panda.loadAllUnreadMessages ();
         console.log ("‣ Tú tienes " + unread.length + " mensajes no leídos");
     });
     // called when WA sends chats
     // ¡esto puede tardar unos minutos si tiene miles de contactos!
-    Turbo.on('contacts-received', () => {
-        console.log('‣ Tú tienes ' + Object.keys(Turbo.contacts).length + ' contactos');
+    Panda.on('contacts-received', () => {
+        console.log('‣ Tú tienes ' + Object.keys(Panda.contacts).length + ' contactos');
     });
     
     //--- Bienvenida y Despedida 
-  Turbo.on('group-participants-update', async (anu) => {
+  Panda.on('group-participants-update', async (anu) => {
       isWelcome = cekWelcome(anu.jid);
       if(isWelcome === true) {
       	
       try {
-	      ppimg = await Turbo.getProfilePicture(`${anu.participants[0].split('@')[0]}@c.us`);
+	      ppimg = await Panda.getProfilePicture(`${anu.participants[0].split('@')[0]}@c.us`);
 	    } catch {
 	      ppimg = 'https://i.ibb.co/Jr6JBJQ/Profile-TURBO.jpg';
 	    } 
 	
-      mdata = await Turbo.groupMetadata(anu.jid);
+      mdata = await Panda.groupMetadata(anu.jid);
       if (anu.action == 'add') {
         num = anu.participants[0];
           
-	    let username = Turbo.getName(num)
-        let about = (await Turbo.getStatus(num).catch(console.error) || {}).status || ''
+	    let username = Panda.getName(num)
+        let about = (await Panda.getStatus(num).catch(console.error) || {}).status || ''
         let member = mdata.participants.length
         let tag = '@'+num.split('@')[0]
 	    let buff = await getBuffer(ppimg);
 	    let descrip = mdata.desc
 	    let welc = await getCustomWelcome(mdata.id)
 	    capt = welc.replace('@user', tag).replace('@name', username).replace('@bio', about).replace('@date', tanggal).replace('@desc', descrip).replace('@group', mdata.subject);
-	      Turbo.send2ButtonLoc(mdata.id, buff, capt, 'Suscríbete en YouTube\nhttps://youtube.com/c/turbontr1?sub_confirmatión=1', '⦙☰ MENU', '/menu', '⏍ INFO GP', '/infogp', false, {
+	      Turbo.send2ButtonLoc(mdata.id, buff, capt,'Entra ami grupo de whatsApp https://chat.whatsapp.com/F8r1t9CvUruE5pmqMXEUGG?sub_confirmatión=1', '⦙☰ MENU', '/menu', '⏍ INFO GP', '/infogp', false, {
 	      contextInfo: {  
-            mentionedJid: Turbo.parseMention(capt)
+            mentionedJid: Panda.parseMention(capt)
 	      } 
 	    });
         } else if (anu.action == 'remove') {
         num = anu.participants[0];
-        let username = Turbo.getName(num)
-        let about = (await Turbo.getStatus(num).catch(console.error) || {}).status || ''
+        let username = Panda.getName(num)
+        let about = (await Panda.getStatus(num).catch(console.error) || {}).status || ''
         let member = mdata.participants.length
         let tag = '@'+num.split('@')[0]
         let buff = await getBuffer(ppimg);
         let bye = await getCustomBye(mdata.id);
         capt = bye.replace('@user', tag).replace('@name', username).replace('@bio', about).replace('@date', tanggal).replace('@group', mdata.subject);
-        Turbo.sendButtonLoc(mdata.id, buff, capt, 'Suscríbete en YouTube\nhttps://youtube.com/c/turbontr1?sub_confirmatión=1', '👋🏻', 'unde', false, {
+        Panda.sendButtonLoc(mdata.id, buff, capt, 'Suscríbete en YouTube\nhttps://youtube.com/c/turbontr1?sub_confirmatión=1', '👋🏻', 'unde', false, {
 	      contextInfo: { 
-            mentionedJid: Turbo.parseMention(capt)
+            mentionedJid: Panda.parseMention(capt)
 	      } 
 	    });
 	//--
@@ -95,13 +95,13 @@ async function starts() {
 });
 
 //--antidelete 
-Turbo.on('message-delete', async (m) => {
+Panda.on('message-delete', async (m) => {
     if (m.key.fromMe) return;
     let isAntidelete = cekAntidelete(m.key.remoteJid);
     if (isAntidelete === false) return;
     m.message = (Object.keys(m.message)[0] === 'ephemeralMessage') ? m.message.ephemeralMessage.message : m.message;
     const Type = Object.keys(m.message)[0];
-    await Turbo.reply(m.key.remoteJid, `
+    await Panda.reply(m.key.remoteJid, `
 ━━━━⬣  𝘼𝙉𝙏𝙄 𝘿𝙀𝙇𝙀𝙏𝙀  ⬣━━━━
 
 *▢ Nombre :* @${m.participant.split`@`[0]} 
@@ -114,15 +114,15 @@ Turbo.on('message-delete', async (m) => {
         mentionedJid: [m.participant]
       }
     });
-    Turbo.copyNForward(m.key.remoteJid, m.message).catch(e => console.log(e, m));
+    Panda.copyNForward(m.key.remoteJid, m.message).catch(e => console.log(e, m));
   });
     
 //---llamada auto block
-Turbo.on("CB:Call", json => {
+Panda.on("CB:Call", json => {
   let call;
   calling = JSON.parse(JSON.stringify(json));
   call = calling[1].from;
-  Turbo.sendMessage(call, `*${Turbo.user.name}* No hagas llamadas al bot, tu número se bloqueará automáticamente`, MessageType.text).then(() => Turbo.blockUser(call, "add"));
+  Panda.sendMessage(call, `*${Panda.user.name}* No hagas llamadas al bot, tu número se bloqueará automáticamente`, MessageType.text).then(() => Turbo.blockUser(call, "add"));
 }); 
 
 
@@ -162,8 +162,8 @@ require('./index.js');
 nocache('./index.js', module => console.log(color(`Index.js Se actualizó!`)));
 
 
-Turbo.on('chat-update', async (message) => {
-require('./index.js')(Turbo, message);
+Panda.on('chat-update', async (message) => {
+require('./index.js')(Panda, message);
 });
 
 starts();
