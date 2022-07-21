@@ -1,4 +1,4 @@
-console.log('✅ Iniciando...')
+ole.log('✅ Iniciando...')
 let { spawn } = require('child_process')
 let path = require('path')
 let fs = require('fs')
@@ -11,12 +11,12 @@ const CFonts  = require('cfonts')
   colors: ['green'],
 });*/
 
-CFonts.say('TURBO', {
+CFonts.say('PANDA, {
   font: 'pallet',
   align: 'center',
   gradient: ['red', 'magenta']
 })
-CFonts.say(`turbo-bot By TURBO`, {
+CFonts.say(`panda-bot By PANDA`, {
   font: 'console',
   align: 'center',
   colors: ['yellow']
