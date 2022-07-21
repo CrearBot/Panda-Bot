@@ -1,7 +1,7 @@
 const { WAConnection: _WAConnection, ReconnectMode, MessageType, MessageOptions } = require('@adiwajshing/baileys');
 const simple = require("./whatsapp/connecting.js");
 const WAConnection = simple.WAConnection(_WAConnection);
-const Turbo = new WAConnection();
+const Panda = new WAConnection();
 const qrcode = require("qrcode-terminal");
 const {
   cekWelcome,
